@@ -16,7 +16,7 @@ const requestListner = (req, res) => {
   }
   let body = "";
   req.on("data", chunk => {
-    body += chunk.toString();
+    body += chunk;
   })
   if(req.url === "/todos" && req.method === "GET") {
     successHandle(res, todos)
@@ -65,7 +65,14 @@ const requestListner = (req, res) => {
       errorHandle(res)
     }
   } else {
-    errorHandle(res)
+    res.writeHead(404, headers);
+    res.write(
+      JSON.stringify({
+        status: "not found",
+        message: "無此網站路由"
+      })
+    );
+    res.end();
   }
 }
 
